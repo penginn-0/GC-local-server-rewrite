@@ -23,6 +23,12 @@ public interface ICardDbContext
     public DbSet<OnlineMatch> OnlineMatches { get; set; }
     
     public DbSet<OnlineMatchEntry> OnlineMatchEntries { get; set; }
+    
+    public DbSet<Unlock> Unlocks { get; set; }
+
+    public DbSet<Item> Items { get; set; }
+    
+    public DbSet<Coin> Coins { get; set; }
 
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     

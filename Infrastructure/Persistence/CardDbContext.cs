@@ -36,6 +36,12 @@ public partial class CardDbContext : DbContext, ICardDbContext
     public virtual DbSet<OnlineMatch> OnlineMatches { get; set; } = null!;
 
     public virtual DbSet<OnlineMatchEntry> OnlineMatchEntries { get; set; } = null!;
+    
+    public virtual DbSet<Unlock> Unlocks { get; set; } = null!;
+    
+    public virtual DbSet<Item> Items { get; set; } = null!;
+    
+    public virtual DbSet<Coin> Coins { get; set; } = null!;
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -131,13 +137,6 @@ public partial class CardDbContext : DbContext, ICardDbContext
             entity.ToTable("PlayNumRank");
 
             entity.Property(e => e.MusicId).ValueGeneratedNever();
-            entity.Property(e => e.PlayCount);
-            entity.Property(e => e.Artist);
-            entity.Property(e => e.Title);
-            entity.Property(e => e.Rank);
-            entity.Property(e => e.Rank2);
-            entity.Property(e => e.PrevRank);
-            entity.Property(e => e.PrevRank2);
         });
 
         modelBuilder.Entity<GlobalScoreRank>(entity =>
@@ -147,19 +146,6 @@ public partial class CardDbContext : DbContext, ICardDbContext
             entity.ToTable("GlobalScoreRank");
 
             entity.Property(e => e.CardId).ValueGeneratedNever();
-            entity.Property(e => e.Fcol1);
-            entity.Property(e => e.AvatarId);
-            entity.Property(e => e.Title);
-            entity.Property(e => e.TitleId);
-            entity.Property(e => e.Rank);
-            entity.Property(e => e.AreaId);
-            entity.Property(e => e.Area);
-            entity.Property(e => e.LastPlayTenpoId);
-            entity.Property(e => e.TenpoName);
-            entity.Property(e => e.PrefId);
-            entity.Property(e => e.Pref);
-            entity.Property(e => e.TotalScore);
-            entity.Property(e => e.PlayerName);
         });
         
         modelBuilder.Entity<MonthlyScoreRank>(entity =>
@@ -169,19 +155,6 @@ public partial class CardDbContext : DbContext, ICardDbContext
             entity.ToTable("MonthlyScoreRank");
 
             entity.Property(e => e.CardId).ValueGeneratedNever();
-            entity.Property(e => e.Fcol1);
-            entity.Property(e => e.AvatarId);
-            entity.Property(e => e.Title);
-            entity.Property(e => e.TitleId);
-            entity.Property(e => e.Rank);
-            entity.Property(e => e.AreaId);
-            entity.Property(e => e.Area);
-            entity.Property(e => e.LastPlayTenpoId);
-            entity.Property(e => e.TenpoName);
-            entity.Property(e => e.PrefId);
-            entity.Property(e => e.Pref);
-            entity.Property(e => e.TotalScore);
-            entity.Property(e => e.PlayerName);
         });
         
         modelBuilder.Entity<ShopScoreRank>(entity =>
@@ -191,19 +164,6 @@ public partial class CardDbContext : DbContext, ICardDbContext
             entity.ToTable("ShopScoreRank");
 
             entity.Property(e => e.CardId).ValueGeneratedNever();
-            entity.Property(e => e.Fcol1);
-            entity.Property(e => e.AvatarId);
-            entity.Property(e => e.Title);
-            entity.Property(e => e.TitleId);
-            entity.Property(e => e.Rank);
-            entity.Property(e => e.AreaId);
-            entity.Property(e => e.Area);
-            entity.Property(e => e.LastPlayTenpoId);
-            entity.Property(e => e.TenpoName);
-            entity.Property(e => e.PrefId);
-            entity.Property(e => e.Pref);
-            entity.Property(e => e.TotalScore);
-            entity.Property(e => e.PlayerName);
         });
 
         modelBuilder.Entity<OnlineMatch>(entity =>
@@ -222,7 +182,30 @@ public partial class CardDbContext : DbContext, ICardDbContext
         {
             entity.HasKey(e => new { e.MatchId, e.EntryId });
         });
+        
+        modelBuilder.Entity<Unlock>(entity =>
+        {
+            entity.HasKey(e => new { e.CardId, e.UnlockItemId, e.UnlockType });
+            entity.HasOne<CardMain>()
+                .WithMany(e=>e.Unlocks)
+                .HasForeignKey(e => e.CardId);
+        });
+        
+        modelBuilder.Entity<Item>(entity =>
+        {
+            entity.HasKey(e => e.ItemId);
+            entity.HasOne<CardMain>()
+                .WithMany(e=>e.Items)
+                .HasForeignKey(e => e.CardId);
+        });
 
+        modelBuilder.Entity<Coin>(entity =>
+        {
+            entity.HasKey(e => e.CardId);
+            entity.HasOne<CardMain>()
+                .WithOne(e=>e.Coin)
+                .HasForeignKey<Coin>(e => e.CardId);
+        });
         OnModelCreatingPartial(modelBuilder);
     }
 

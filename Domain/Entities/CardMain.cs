@@ -19,4 +19,8 @@ public partial class CardMain
     public string? Created { get; set; } = string.Empty;
 
     public string? Modified { get; set; } = string.Empty;
+
+    public List<Item>? Items { get; set; }
+    public Coin?       Coin  { get; set; }
+    public List<Unlock>?      Unlocks     { get; set; }
 }
