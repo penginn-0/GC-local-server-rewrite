@@ -42,6 +42,7 @@ try
         .AddJsonFile($"{configurationsDirectory}/matching.json", optional: true, reloadOnChange: false)
         .AddJsonFile($"{configurationsDirectory}/auth.json", optional: true, reloadOnChange: false)
         .AddJsonFile($"{configurationsDirectory}/rank.json", optional: true, reloadOnChange: false)
+        .AddJsonFile($"{configurationsDirectory}/locked.json", optional: true, reloadOnChange: false)
         .AddJsonFile($"{configurationsDirectory}/server.json", optional: true, reloadOnChange: false);
     
     builder.Services.Configure<EventConfig>(
@@ -52,6 +53,8 @@ try
         builder.Configuration.GetSection(GameConfig.GAME_SECTION));
     builder.Services.Configure<AuthConfig>(
         builder.Configuration.GetSection(AuthConfig.AUTH_SECTION));
+    builder.Services.Configure<LockedItemConfig>(
+        builder.Configuration.GetSection(LockedItemConfig.LOCKED_SECTION));
     builder.Services.AddOptions<RankConfig>()
         .Bind(builder.Configuration.GetSection(RankConfig.RANK_SECTION))
         .ValidateDataAnnotations()
