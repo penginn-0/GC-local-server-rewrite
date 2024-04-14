@@ -1,19 +1,29 @@
 ﻿{
   "Events": {
-    "UseEvents": true,
+    "UseEvents": false,
     "EventFiles": [
       {
-        "FileName": "1.txt",
+        "FileName": "v300.evt",
         "Index": 0,
         "GameID": 2110
       },
       {
-        "FileName": "1.txt",
+        "FileName": "v206.evt",
         "Index": 0,
         "GameID": 2100
       },
       {
-        "FileName": "1.txt",
+        "FileName": "v300-telop.txt",
+        "Index": 1,
+        "GameID": 2110
+      },
+      {
+        "FileName": "v206-telop.txt",
+        "Index": 1,
+        "GameID": 2100
+      },
+      {
+        "FileName": "common-telop.txt",
         "Index": 0
       }
     ]
