@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Application.Game.Server;
+using Azure.Core;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MainServer.Controllers.Game;
@@ -41,9 +42,16 @@ public class ServerController : BaseController<ServerController>
     }
 
     [HttpGet("data.php")]
-    public async Task<ActionResult<string>> GetData()
+    public async Task<ActionResult<string>> GetData(
+        [FromQuery] string? MAC,
+        [FromQuery(Name = "GID")] int GameID = -1)
     {
-        var query = new GetDataQuery(Request.Host.Value, Request.Scheme);
+
+        if (GameID is -1 || MAC is null)
+        {
+            return BadRequest();
+        }
+        var query = new GetDataQuery(Request.Host.Value, Request.Scheme, GameID, MAC);
         return Ok(await Mediator.Send(query));
     }
 }

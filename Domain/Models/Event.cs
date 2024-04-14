@@ -11,4 +11,5 @@ public class Event
     public string NotBefore { get; set; } = string.Empty;
 
     public string NotAfter { get; set; } = string.Empty;
+    public int GameID { get; set; }
 }
