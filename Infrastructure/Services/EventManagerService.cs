@@ -60,7 +60,7 @@ public class EventManagerService : IEventManagerService
         }
         foreach (var eventData in config.EventFiles)
         {
-            var filePath = Path.Combine(WWWROOT, EVENT_FOLDER, eventData.FileName);
+            var filePath = Path.Combine(WWWROOT, EVENT_FOLDER + eventData.GameID switch { -1 => "", _ => @"\" + eventData.GameID.ToString() }, eventData.FileName);
             if (!File.Exists(filePath))
             {
                 logger.LogError("Event file {File} not found at path {Path}!", eventData.FileName,
@@ -74,7 +74,8 @@ public class EventManagerService : IEventManagerService
                 Name = eventData.FileName,
                 Md5 = md5,
                 NotBefore = NOT_BEFORE_STRING,
-                NotAfter = NOT_AFTER_STRING
+                NotAfter = NOT_AFTER_STRING,
+                GameID = eventData.GameID,
             };
 
             var eventType = DetermineFileType(eventData.FileName);
@@ -96,9 +97,16 @@ public class EventManagerService : IEventManagerService
         {
             return;
         }
-
-        logger.LogWarning("No big news image with index 0! Changing a random one...");
-        events.First(event1 => event1.Name.StartsWith("news_big_")).Index = 0;
+        else
+        {
+            if(!events.Exists(Event1 => Event1.Name.StartsWith("news_big_")))
+            {
+                logger.LogWarning("No big news image");
+                return;
+            }
+            logger.LogWarning("No big news image with index 0! Changing a random one...");
+            events.First(event1 => event1.Name.StartsWith("news_big_")).Index = 0;
+        }
     }
 
     private EventFileType DetermineFileType(string fileName)
