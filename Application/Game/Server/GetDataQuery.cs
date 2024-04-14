@@ -1,7 +1,5 @@
 ﻿using System.Text;
-using Application.Game.Card.Management;
 using MediatR;
-using Microsoft.Extensions.Logging;
 
 namespace Application.Game.Server;
 
