@@ -97,6 +97,7 @@ public class EventManagerService : IEventManagerService
         {
             return;
         }
+
         logger.LogWarning("No big news image with index 0! Changing a random one...");
         events.First(event1 => event1.Name.StartsWith("news_big_")).Index = 0;
     }
